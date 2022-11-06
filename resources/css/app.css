@@ -1,0 +1,137 @@
+.app__body {
+    background-color: #f3ebeb;
+}
+
+.hidden__transformed {
+    display: none;
+}
+
+.display__transformed {
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    background-color: white;
+    z-index: 1;
+    box-shadow: 1px 1px 6px black;
+}
+
+.popup {
+    justify-content: space-around;
+    background-color: white;
+    border-radius: 2rem;
+    width: 80%;
+    min-height: 5rem;
+    box-shadow: 1px 1px 6px black;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.display {
+    display: flex;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-around;
+}
+
+.page {
+    border: 1px solid #7776bb;
+    border-radius: 1rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    cursor: pointer;
+}
+
+.page:hover {
+    background-color: #7776bb;
+}
+
+.selected {
+    background-color: #7776bb;
+}
+
+.table__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    z-index: 2;
+}
+
+.transform__var {
+    height: 3rem;
+    display: flex;
+    padding: 0rem 0.5rem 0rem 0.5rem;
+    align-items: center;
+    background-color: white;
+    box-shadow: 1px 1px 6px black;
+    z-index: 2;
+    border-radius: 1rem 0rem 0rem 1rem;
+    cursor: pointer;
+}
+
+.head__element {
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 0rem 1rem 1rem 0rem;
+    box-shadow: 1px 1px 6px black;
+    z-index: 2;
+}
+
+.element__part {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0rem 0.5rem 0rem 0.5rem;
+}
+
+.table__body {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border-radius: 2rem;
+    width: 80%;
+    min-height: 5rem;
+    box-shadow: 1px 1px 6px black;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.body__elem {
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.body__elem>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.elem__user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.elem__id {
+    color: #8d8d8d;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.elem__date {
+    color: #8d8d8d;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+}
