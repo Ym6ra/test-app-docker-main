@@ -1,24 +1,33 @@
 <template>
     <div class="popup" v-bind:class="[{ display: !showeInputVal }, { hidden: showeInputVal }]">
-        <div class="popup__elem">
-            <div>{{ this.id }}</div>
-        </div>
-        <div class="popup__elem">
-            <div>{{ this.name }}</div>
-            <input v-model="newName">
-        </div>
-        <div class="popup__elem">
-            <div>{{ this.text }}</div>
-            <input v-model="newText">
-        </div>
-        <div class="popup__elem">
-            <div>{{ this.date }}</div>
-            <date-picker v-model="newDate" valueType="format"></date-picker>
-        </div>
-        <div class="popup__elem" v-on:click="showeInput(); patchComment()">
-            <i class="material-symbols-outlined">
-                ios_share
-            </i>
+        <div class="popup__info">
+            <div class="info__title">
+                <h3>Редактировать комментарий №{{ this.id }}</h3>
+                <div class="info__button" v-on:click="showeInput();">
+                    <i class="material-symbols-outlined">
+                        close
+                    </i>
+                </div>
+            </div>
+            <div class="info__elem">
+                <div class="elem__part">
+                    <div>{{ this.name }}</div>
+                    <input v-model="newName">
+                </div>
+                <div class="elem__part">
+                    <div>{{ this.date }}</div>
+                    <date-picker v-model="newDate" valueType="format"></date-picker>
+                </div>
+            </div>
+            <div class="info__body">
+                <div>{{ this.text }}</div>
+                <textarea v-model="newText" placeholder="Ваш комментарий"></textarea>
+            </div>
+            <div class="info__button" v-on:click="showeInput(); patchComment()">
+                <i class="material-symbols-outlined">
+                    ios_share
+                </i>
+            </div>
         </div>
     </div>
 </template>
@@ -51,7 +60,7 @@ export default {
         //    this.showeInput;
         //    this.patchComment;
         //},
-        showeInput(){
+        showeInput() {
             this.$emit('showeInput')
         },
         patchComment() {

@@ -1,58 +1,74 @@
 <template>
     <div class="app__body">
-        <div class="table__head">
-            <div class="transform__var" v-on:click="showeSort(showeSortVal)">
-                <i class="material-symbols-outlined">
-                    sort
-                </i>
-            </div>
-            <div class="transform__element hidden__transformed" v-bind:class="{ display__transformed: !showeSortVal }">
-                <div class="element__part" v-on:click="sortById(boolId)">
-                    <div>Сортировка по номеру</div>
+        <div class="table">
+            <div class="table__head">
+                <div class="transform__var" v-on:click="showeSort(showeSortVal)">
                     <i class="material-symbols-outlined">
-                        unfold_more
+                        sort
                     </i>
                 </div>
-                <div class="element__part" v-on:click="sortByDate(boolDate)">
-                    <div>Сортировка по дате</div>
-                    <i class="material-symbols-outlined">
-                        unfold_more
-                    </i>
+                <div class="transform__element hidden__transformed"
+                    v-bind:class="{ display__transformed: !showeSortVal }">
+                    <div class="element__part" v-on:click="sortById(boolId)">
+                        <div>Сортировка по номеру</div>
+                        <i class="material-symbols-outlined">
+                            unfold_more
+                        </i>
+                    </div>
+                    <div class="element__part" v-on:click="sortByDate(boolDate)">
+                        <div>Сортировка по дате</div>
+                        <i class="material-symbols-outlined">
+                            unfold_more
+                        </i>
+                    </div>
                 </div>
-            </div>
-            <div class="head__element">
-                <div class="element__part" v-on:click="newComment(!creatCommentVal)">
-                    <i class="material-symbols-outlined">
-                        add_comment
-                    </i>
-                </div>
-                <div class="element__part" v-on:click="getData">
-                    <i class="material-symbols-outlined">
-                        refresh
-                    </i>
+                <div class="head__element">
+                    <div class="element__part" v-on:click="newComment(!creatCommentVal)">
+                        <i class="material-symbols-outlined">
+                            add_comment
+                        </i>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="table__body" v-for="comment of paginatetComments">
-            <commentElem v-bind:id="comment.id" v-bind:name="comment.name" v-bind:text="comment.text"
-                v-bind:date="comment.date" v-bind:showeComment="showeCommentVal" />
-            <div class="body__elem">
-                <div v-on:click="showeInput(comment.id, comment.name, comment.text, comment.date, !showeInputVal)">
-                    <i class="material-symbols-outlined">
-                        edit_square
-                    </i>
-                </div>
-                <div v-on:click="deleteComment(comment.id)">
-                    <i class="material-symbols-outlined">
-                        delete
-                    </i>
+            <div class="table__body" v-for="comment of paginatetComments">
+                <commentElem v-bind:id="comment.id" v-bind:name="comment.name" v-bind:text="comment.text"
+                    v-bind:date="comment.date" v-bind:showeComment="showeCommentVal" />
+                <div class="body__elem">
+                    <div v-on:click="showeInput(comment.id, comment.name, comment.text, comment.date, !showeInputVal)">
+                        <i class="material-symbols-outlined">
+                            edit_square
+                        </i>
+                    </div>
+                    <div v-on:click="deleteComment(comment.id); showeDelete(!showeDeleteVal, comment.id)">
+                        <i class="material-symbols-outlined">
+                            delete
+                        </i>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="pagination">
-            <div class="page" :class="{ selected: page === pageNumber }" v-for="page in pages"
-                v-on:click="pageClick(page)">
-                {{ page }}
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" v-for="page in pages" v-on:click="pageClick(page)">
+                    <a class="page-link" :class="{ selected: page === pageNumber }">{{ page }}</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="popup popupDelete" v-bind:class="[{ display: !showeDeleteVal }, { hidden: showeDeleteVal }]">
+            <div class="popup__info">
+                <div class="info__title">
+                    <h3>Комментарий №{{ this.deleteId }} удален</h3>
+                    <div class="info__button" v-on:click="showeDelete(!showeDeletVal, deleteId);">
+                        <i class="material-symbols-outlined">
+                            close
+                        </i>
+                    </div>
+                </div>
+            </div>
+            <div class="info__body">
+                <span>Вы удалили комментарий.</span>
+                <span>Изменения вступят в силу через несколько секунд.</span>
+                <span>Спасибо за ожидание!</span>
             </div>
         </div>
         <commentUpdate v-bind:id="this.id" v-bind:name="this.name" v-bind:text="this.text" v-bind:date="this.date"
@@ -64,9 +80,10 @@
 <script>
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
-import commentCreate from './commentCreate.vue';
-import commentUpdate from './commentUpdate.vue';
-import commentElem from './commentElem.vue';
+import commentCreate from './components/commentCreate.vue';
+import commentUpdate from './components/commentUpdate.vue';
+import commentElem from './components/commentElem.vue';
+
 
 const default_layout = "default";
 
@@ -82,7 +99,7 @@ export default {
     computed: {
         pages() {
             let pagCount = [];
-            for (let i = 1; i < Math.round((this.comments).length / this.commentsPerPage) + 1; i++) {
+            for (let i = 1; i < Math.ceil((this.comments).length / this.commentsPerPage) + 1; i++) {
                 pagCount.push(i);
             }
             return pagCount;
@@ -101,6 +118,7 @@ export default {
             showeInputVal: true,
             creatCommentVal: true,
             showeCommentVal: false,
+            showeDeleteVal: true,
             boolId: true,
             boolDate: false,
             id: null,
@@ -110,6 +128,7 @@ export default {
             newName: '',
             newText: '',
             newDate: '',
+            deleteId: '',
             comments: {},
             commentsArray: [],
             filters: {},
@@ -127,12 +146,12 @@ export default {
                 this.comments = Object.values(response.data);
             })
         },
-        deleteComment(a) {
-            console.log(a);
+        async deleteComment(a) {
+            //console.log(a);
             let url = String('http://localhost/api/comments/' + a)
             axios.delete(url, {})
                 .then((response) => {
-                    //console.log(response.status);
+                    console.log(response.status);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -170,6 +189,10 @@ export default {
         },
         showeSort(comBool) {
             this.showeSortVal = !comBool;
+        },
+        showeDelete(comBool, id) {
+            this.deleteId = id;
+            this.showeDeleteVal = comBool;
         },
         newComment(comBool) {
             this.creatCommentVal = comBool;

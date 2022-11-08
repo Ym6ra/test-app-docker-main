@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="comment__body">
         <div class="body__elem">
             <div class="elem__user">
                 <i class="material-symbols-outlined">
@@ -13,7 +13,7 @@
                 # {{ this.id }}
             </div>
         </div>
-        <div class="body__elem">
+        <div class="body__elem text">
             <div class="elem__text">
                 <div>{{ this.text }}</div>
             </div>
