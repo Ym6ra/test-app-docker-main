@@ -1,5 +1,35 @@
-.app__body {
+body {
     background-color: #f3ebeb;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    color: #504e4e;
+
+}
+
+input {
+    display: inline-block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 210px;
+    height: 34px;
+    padding: 6px 30px;
+    padding-left: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+    box-shadow: inset 0 1px 1px rgb(0 0 0 / 8%);
+}
+
+.input:hover {
+    border-color: #409aff;
+}
+
+.material-symbols-outlined {
+    cursor: pointer;
 }
 
 .hidden__transformed {
@@ -9,22 +39,79 @@
 .display__transformed {
     display: flex;
     align-items: center;
-    height: 2rem;
     background-color: white;
     z-index: 1;
     box-shadow: 1px 1px 6px black;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .popup {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     justify-content: space-around;
     background-color: white;
     border-radius: 2rem;
-    width: 80%;
+    width: 60%;
     min-height: 5rem;
     box-shadow: 1px 1px 6px black;
-    margin-bottom: 1rem;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    padding: 0.5rem;
 }
+
+.popupMessage {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.popup__info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.info__title {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.info__elem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.elem__part {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    padding: 0rem 0.5rem 0rem 0.5rem;
+    justify-content: space-around;
+}
+
+.info__body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.info__body>span {
+    text-align: center;
+}
+
+.info__button {
+    padding: 0.5rem;
+}
+
 
 .hidden {
     display: none;
@@ -36,30 +123,29 @@
 
 .pagination {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 
-.page {
-    border: 1px solid #7776bb;
-    border-radius: 1rem;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    cursor: pointer;
+.page-link {
+    background-color: none;
+    color: black;
 }
 
-.page:hover {
-    background-color: #7776bb;
+.page-link:hover {
+    background-color: #727272;
+    color: white;
 }
 
 .selected {
-    background-color: #7776bb;
+    background-color: #727272;
+    color: white;
 }
 
 .table__head {
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
-    margin-left: 1rem;
+    margin-top: 1rem;
     z-index: 2;
 }
 
@@ -77,6 +163,8 @@
 
 .head__element {
     height: 3rem;
+    width: 4rem;
+    justify-content: center;
     display: flex;
     align-items: center;
     background-color: white;
@@ -92,6 +180,13 @@
     padding: 0rem 0.5rem 0rem 0.5rem;
 }
 
+.table {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
 .table__body {
     display: flex;
     justify-content: space-around;
@@ -102,20 +197,43 @@
     box-shadow: 1px 1px 6px black;
     margin-bottom: 1rem;
     margin-left: 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.comment__body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .body__elem {
+    width: 20%;
     margin-left: 2rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-}
-
-.body__elem>div {
-    display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
 }
+
+.body__elem.text {
+    width: 100%;
+}
+
+.body__elem.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0.5rem 1rem 0rem 1rem;
+}
+
+hr {
+    width: 100%;
+    margin: 0;
+}
+
 
 .elem__user {
     display: flex;
@@ -134,4 +252,24 @@
     color: #8d8d8d;
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
+}
+
+.elem__text {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 1250px) {
+    .info__elem {
+        flex-direction: column;
+    }
+
+        .info__elem>.elem__part {
+        width: 60%;
+        padding: 0rem 0.5rem 1rem 0.5rem;
+    }
+
 }
