@@ -31,20 +31,24 @@
                 </div>
             </div>
             <div class="table__body" v-for="comment of paginatetComments">
-                <commentElem v-bind:id="comment.id" v-bind:name="comment.name" v-bind:text="comment.text"
-                    v-bind:date="comment.date" v-bind:showeComment="showeCommentVal" />
-                <div class="body__elem">
+                <div class="body__elem buttons">
                     <div v-on:click="showeInput(comment.id, comment.name, comment.text, comment.date, !showeInputVal)">
                         <i class="material-symbols-outlined">
                             edit_square
                         </i>
                     </div>
-                    <div v-on:click="deleteComment(comment.id); showeDelete(!showeDeleteVal, comment.id)">
+                    <commentDelete v-bind:id="comment.id" @getData="getData"
+                        @deleteMessageTitle="choseDeleteTitle"
+                        @deleteMessageBody="choseDeleteBody" />
+                    <!--<div v-on:click="deleteComment(comment.id); deletMessageTitle()">
                         <i class="material-symbols-outlined">
                             delete
                         </i>
-                    </div>
+                    </div>-->
                 </div>
+                <hr>
+                <commentElem v-bind:id="comment.id" v-bind:name="comment.name" v-bind:text="comment.text"
+                    v-bind:date="comment.date" v-bind:showeComment="showeCommentVal" />
             </div>
         </div>
         <nav aria-label="Page navigation">
@@ -54,11 +58,11 @@
                 </li>
             </ul>
         </nav>
-        <div class="popup popupDelete" v-bind:class="[{ display: !showeDeleteVal }, { hidden: showeDeleteVal }]">
+        <div class="popup popupMessage" v-bind:class="[{ display: !showeMessageVal }, { hidden: showeMessageVal }]">
             <div class="popup__info">
                 <div class="info__title">
-                    <h3>Комментарий №{{ this.deleteId }} удален</h3>
-                    <div class="info__button" v-on:click="showeDelete(!showeDeletVal, deleteId);">
+                    <h3>{{ messageTitle }}</h3>
+                    <div class="info__button" v-on:click="hiddenMessage()">
                         <i class="material-symbols-outlined">
                             close
                         </i>
@@ -66,21 +70,32 @@
                 </div>
             </div>
             <div class="info__body">
-                <span>Вы удалили комментарий.</span>
-                <span>Изменения вступят в силу через несколько секунд.</span>
-                <span>Спасибо за ожидание!</span>
+                {{ messageBody }}
             </div>
         </div>
-        <commentUpdate v-bind:id="this.id" v-bind:name="this.name" v-bind:text="this.text" v-bind:date="this.date"
-            v-bind:showeInputVal="this.showeInputVal" @getData="getData" @showeInput="unshoweInput" />
-        <commentCreate v-bind:creatCommentVal="this.creatCommentVal" @getData="getData"
-            @newComment="newComment(!creatCommentVal)" />
+        <commentUpdate 
+        v-bind:id="this.id" 
+        v-bind:name="this.name" 
+        v-bind:text="this.text" 
+        v-bind:date="this.date"
+        v-bind:showeInputVal="this.showeInputVal" 
+        @getData="getData" 
+        @showeInput="unshoweInput"
+        @updateMessageTitle="choseUpdateTitle" 
+        @updateMessageBody="choseUpdateBody" />
+        <commentCreate 
+        v-bind:creatCommentVal="this.creatCommentVal" 
+        @getData="getData"
+        @newComment="newComment(!creatCommentVal)" 
+        @createMessageTitle="choseCreateTitle"
+        @createMessageBody="choseCreateBody" />
     </div>
 </template>
 <script>
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 import commentCreate from './components/commentCreate.vue';
+import commentDelete from './components/commentDelete.vue';
 import commentUpdate from './components/commentUpdate.vue';
 import commentElem from './components/commentElem.vue';
 
@@ -94,6 +109,7 @@ export default {
         DatePicker,
         commentUpdate,
         commentElem,
+        commentDelete,
 
     },
     computed: {
@@ -118,10 +134,14 @@ export default {
             showeInputVal: true,
             creatCommentVal: true,
             showeCommentVal: false,
-            showeDeleteVal: true,
+            showeMessageVal: true,
+            messageTitleVar: '',
+            messageBodyVar: '',
             boolId: true,
             boolDate: false,
             id: null,
+            messageTitle: '',
+            messageBody: '',
             name: 'Name',
             text: 'Text',
             date: 'Date',
@@ -145,18 +165,6 @@ export default {
             }).then(response => {
                 this.comments = Object.values(response.data);
             })
-        },
-        async deleteComment(a) {
-            //console.log(a);
-            let url = String('http://localhost/api/comments/' + a)
-            axios.delete(url, {})
-                .then((response) => {
-                    console.log(response.status);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-            this.getData();
         },
         sortById(bo) {
             if (bo == true) {
@@ -190,10 +198,6 @@ export default {
         showeSort(comBool) {
             this.showeSortVal = !comBool;
         },
-        showeDelete(comBool, id) {
-            this.deleteId = id;
-            this.showeDeleteVal = comBool;
-        },
         newComment(comBool) {
             this.creatCommentVal = comBool;
         },
@@ -209,6 +213,84 @@ export default {
         },
         pageClick(page) {
             this.pageNumber = page;
+        },
+        choseCreateTitle(){
+            let data = {id: ''}
+            let val = 'create';
+            this.showeMessageTitle(val, data);
+        },
+        choseUpdateTitle(data) { 
+            let val = 'update';
+            this.showeMessageTitle(val,data);
+        },
+        choseDeleteTitle(data) { 
+            let val = 'delete';
+            this.showeMessageTitle(val,data);
+        },
+        choseCreateBody(data) {
+            let val = 'create';
+            this.showeMessageBody(val,data);
+        },
+        choseUpdateBody(data) {
+            let val = 'update';
+            this.showeMessageBody(val,data);
+        },
+        choseDeleteBody(data) {
+            let val = 'delete';
+            this.showeMessageBody(val,data);
+        },
+        showeMessageTitle(val,data) {
+            if (val == 'delete') {
+                this.messageTitle = `Удаление комментария №` + data.id;
+            } else if (val == 'create') {
+                this.messageTitle = `Создание нового комментария`;
+            } else if (val == 'update') {
+                this.messageTitle = `Изменение комментария № ` + data.id;
+            } else {
+                console.log(val);
+            }
+            this.showeMessageVal = false;
+        },
+        showeMessageBody(val, data) {
+            if (val == 'delete') {
+                if (data.resp == 200) {
+                    this.messageBody = `Вы удалили комментарий! 
+                                Изменения вступят в силу через несколько секунд. 
+                                Спасибо за ожидание!`
+                } else {
+                    this.messageBody = `Комментарий не удален. 
+                                Возникла непредвиденная ошибка. 
+                                По пробуйте позднее!`
+                }
+            } else if (val == 'create') {
+                if (data.resp == 200) {
+                    this.messageBody = `Вы создали новый комментарий! 
+                                Изменения вступят в силу через несколько секунд. 
+                                Спасибо за ожидание!`
+                } else {
+                    this.messageBody = `Комментарий не создан. 
+                                Возникла непредвиденная ошибка. 
+                                По пробуйте позднее!`
+                }
+            } else if (val == 'update') {
+                if (data.resp == 200) {
+                    this.messageBody = `Вы изменили комментарий! 
+                                Изменения вступят в силу через несколько секунд. 
+                                Спасибо за ожидание!`
+                } else {
+                    this.messageBody = `Комментарий не изменен. 
+                                Возникла непредвиденная ошибка. 
+                                По пробуйте позднее!`
+                }
+            } else {
+                console.log(val);
+                console.log(data);
+            }
+        },
+        hiddenMessage() {
+            this.showeMessageVal = true;
+            this.messageTitle = '';
+            this.messageBody = '';
         },
     }
 };

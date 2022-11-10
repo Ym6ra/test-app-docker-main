@@ -24,7 +24,7 @@
                     <span>Текст комментария</span>
                     <textarea v-model="text" placeholder="Ваш комментарий"></textarea>
                 </div>
-                <div class="info__button" v-on:click="newComment(); uploadComments()">
+                <div class="info__button" v-on:click="newComment(); uploadComments(); createMessageTitle()">
                     <i class="material-symbols-outlined">
                         ios_share
                     </i>
@@ -65,11 +65,16 @@ export default ({
             })
                 .then((response) => {
                     //console.log(response.status);
+                    this.$emit('createMessageBody', { resp: response.status});
                     this.$emit('getData');
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+        },
+        createMessageTitle(){
+            this.$emit('createMessageTitle');
+            this.$emit('showeMessageTitle');
         },
     }
 })

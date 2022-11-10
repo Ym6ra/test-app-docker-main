@@ -23,7 +23,7 @@
                 <div>{{ this.text }}</div>
                 <textarea v-model="newText" placeholder="Ваш комментарий"></textarea>
             </div>
-            <div class="info__button" v-on:click="showeInput(); patchComment()">
+            <div class="info__button" v-on:click="showeInput(); patchComment(); updateMessageTitle()">
                 <i class="material-symbols-outlined">
                     ios_share
                 </i>
@@ -55,11 +55,6 @@ export default {
         }
     },
     methods: {
-        //myMacros(){
-        //    console.log('macro');
-        //    this.showeInput;
-        //    this.patchComment;
-        //},
         showeInput() {
             this.$emit('showeInput')
         },
@@ -72,12 +67,17 @@ export default {
             })
                 .then((response) => {
                     //console.log(response.status);
+                    this.$emit('updateMessageBody', { resp: response.status });
                     this.$emit('getData');
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
+        updateMessageTitle() {
+            this.$emit('updateMessageTitle', { id: this.id });
+            this.$emit('showeMessageTitle');
+        }
     }
 }
 </script>
