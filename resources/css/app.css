@@ -31,6 +31,9 @@ input {
 .material-symbols-outlined {
     cursor: pointer;
 }
+.app__body{
+      min-width: 300px;
+}
 
 .hidden__transformed {
     display: none;
