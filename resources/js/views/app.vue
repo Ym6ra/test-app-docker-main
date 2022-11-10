@@ -260,7 +260,7 @@ export default {
                 } else {
                     this.messageBody = `Комментарий не удален. 
                                 Возникла непредвиденная ошибка. 
-                                По пробуйте позднее!`
+                                Попробуйте позднее!`
                 }
             } else if (val == 'create') {
                 if (data.resp == 200) {
@@ -270,7 +270,7 @@ export default {
                 } else {
                     this.messageBody = `Комментарий не создан. 
                                 Возникла непредвиденная ошибка. 
-                                По пробуйте позднее!`
+                                Попробуйте позднее!`
                 }
             } else if (val == 'update') {
                 if (data.resp == 200) {
@@ -280,7 +280,7 @@ export default {
                 } else {
                     this.messageBody = `Комментарий не изменен. 
                                 Возникла непредвиденная ошибка. 
-                                По пробуйте позднее!`
+                                Попробуйте позднее!`
                 }
             } else {
                 console.log(val);
